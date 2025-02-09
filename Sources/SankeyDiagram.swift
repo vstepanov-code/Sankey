@@ -6,12 +6,13 @@ public struct SankeyDiagram: UIViewRepresentable {
     public var data: SankeyData
     var options = SankeyOptions()
 
+    private let webView: WKWebView = WKWebView()
+
     public init(_ data: SankeyData) {
         self.data = data
     }
     
     public func makeUIView(context: Context) -> WKWebView {
-        let webView = WKWebView()
         webView.isOpaque = false
         webView.scrollView.isScrollEnabled = false
         loadHTML(webView)
@@ -20,6 +21,13 @@ public struct SankeyDiagram: UIViewRepresentable {
     
     public func updateUIView(_ webView: WKWebView, context: Context) {
         loadHTML(webView)
+    }
+    
+    public func captureSnapshot(
+        configuration: WKSnapshotConfiguration? = nil,
+        completion: @escaping (UIImage?) -> Void
+    ) {
+        webView.captureWebViewSnapshot(completion: completion)
     }
     
     // MARK: - View Modifiers
